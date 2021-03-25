@@ -42,7 +42,7 @@ class App extends React.Component
         <h1>The 100 best Movies Ever</h1>
         <div className="searchDiv">
           <form>
-
+            <button onClick={e => this.fetch()}>Load all movies!</button>
             <select onChange={e => this.sortAsc(e)}>
               <option value="asc">Older movies first</option>
               <option value="desc">Newer movies first</option>

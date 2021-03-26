@@ -3,20 +3,19 @@ import React from 'react';
 import Movies from './Movies';
 import Database from './Database';
 
-
 class App extends React.Component
 {
   state = {
     Database: Database
   }
-
+  // --- fetch ---
   fetch()
   {
     this.setState({
       Database: Database
     })
   }
-
+  // --- Sort by year ---
   sortAsc(e)
   {
     const order = e.target.value;
@@ -28,10 +27,11 @@ class App extends React.Component
     }
     if (order === 'desc') {
       this.setState({
-        Database: Database.sort((a, b) => b.rate - a.rate)
+        Database: Database.sort((a, b) => b.year - a.year)
       })
     }
   }
+  // --- Sort by rating ---
   bestRate(e)
   {
     const ratings = e.target.value;
@@ -47,7 +47,33 @@ class App extends React.Component
       })
     }
   }
+  // --- Sort alphabetically ---
+  sortAlphabetically(e)
+  {
+    const sortAlph = e.target.value;
 
+    if (sortAlph === 'sortIt') {
+      this.setState({
+        Database: Database.sort((a, b) => a.title > b.title ? 1 : -1)
+      })
+    }
+    if (sortAlph === 'sortReverse') {
+      this.setState({
+        Database: Database.sort((a, b) => a.title < b.title ? 1 : -1)
+      })
+    }
+  }
+  // --- Search Bar ---
+
+  searchFunc(search)
+  {
+    this.setState({
+      Database: Database.filter((Database => Database.title.toLowerCase()includes(search.toLowerCase())),
+    })
+  }
+
+
+  // --- render ---
   render()
   {
     return (
@@ -64,14 +90,22 @@ class App extends React.Component
               <option value="bestRate">Best movies first</option>
               <option value="worstRate">Worst movies first</option>
             </select>
-            {/* <button onClick={e => this.bestRate()} className="bestRate">Best Rate</button> */}
-            <button onClick={e => this.aToZ()} className="aToZ">A - Z</button>
-            <button onClick={e => this.zToA()} className="zToA">Z - A</button>
+            <select onChange={e => this.sortAlphabetically(e)}>
+              <option value="sortIt">A - Z</option>
+              <option value="sortReverse">Z - A</option>
+            </select>
+            <input onChange={e => this.enterSearchText(e)}
+              type="text"
+              id="search"
+              placeholder="search movie database"
+              name="search"
+            />
+            <input onClick={() => this.searchFunc} type="submit">🔍</input>
           </form >
         </div>
         <Movies data={Database}></Movies>
 
-      </div>
+      </div >
     );
   }
 }

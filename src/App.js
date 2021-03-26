@@ -2,8 +2,7 @@ import './App.css';
 import React from 'react';
 import Movies from './Movies';
 import Database from './Database';
-// import { render } from "@testing-library/react";
-//and TEst
+
 
 class App extends React.Component
 {
@@ -29,13 +28,24 @@ class App extends React.Component
     }
     if (order === 'desc') {
       this.setState({
-        Database: Database.sort((a, b) => b.year - a.year)
+        Database: Database.sort((a, b) => b.rate - a.rate)
       })
     }
   }
-  sortDate()
+  bestRate(e)
   {
+    const ratings = e.target.value;
 
+    if (ratings === 'bestRate') {
+      this.setState({
+        Database: Database.sort((a, b) => b.rate - a.rate)
+      })
+    }
+    if (ratings === 'worstRate') {
+      this.setState({
+        Database: Database.sort((a, b) => a.rate - b.rate)
+      })
+    }
   }
 
   render()
@@ -50,11 +60,13 @@ class App extends React.Component
               <option value="asc">Older movies first</option>
               <option value="desc">Newer movies first</option>
             </select>
-            {/* <button onClick={e => this.sortAsc} className="dateAsc">Sort by Date Ascending</button>
-            <button className="dateDesc">Sort by Date Descending</button> */}
-            <button className="bestRate">Best Rate</button>
-            <button className="aToZ">A - Z</button>
-            <button className="zToA">Z - A</button>
+            <select onChange={e => this.bestRate(e)}>
+              <option value="bestRate">Best movies first</option>
+              <option value="worstRate">Worst movies first</option>
+            </select>
+            {/* <button onClick={e => this.bestRate()} className="bestRate">Best Rate</button> */}
+            <button onClick={e => this.aToZ()} className="aToZ">A - Z</button>
+            <button onClick={e => this.zToA()} className="zToA">Z - A</button>
           </form >
         </div>
         <Movies data={Database}></Movies>

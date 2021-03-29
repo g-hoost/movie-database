@@ -2,11 +2,19 @@ import './App.css';
 import React from 'react';
 import Movies from './Movies';
 import Database from './Database';
+import Filter from './Filter';
 
 class App extends React.Component
 {
   state = {
     Database: Database
+  }
+  // --- reset ---
+  reset()
+  {
+    this.setState({
+      Database: []
+    })
   }
   // --- fetch ---
   fetch()
@@ -65,10 +73,10 @@ class App extends React.Component
   }
   // --- Search Bar ---
 
-  searchFunc(search)
+  searchByTitle(searchTerm)
   {
     this.setState({
-      Database: Database.filter((Database => Database.title.toLowerCase()includes(search.toLowerCase())),
+      Database: Database.filter(item => item.title.includes(searchTerm.toLowerCase()))
     })
   }
 
@@ -79,31 +87,9 @@ class App extends React.Component
     return (
       <div className="App">
         <h1>The Best Movies of All Times</h1>
-        <div className="searchDiv">
-          <form>
-            <button onClick={e => this.fetch()}>Load all movies!</button>
-            <select onChange={e => this.sortAsc(e)}>
-              <option value="asc">Older movies first</option>
-              <option value="desc">Newer movies first</option>
-            </select>
-            <select onChange={e => this.bestRate(e)}>
-              <option value="bestRate">Best movies first</option>
-              <option value="worstRate">Worst movies first</option>
-            </select>
-            <select onChange={e => this.sortAlphabetically(e)}>
-              <option value="sortIt">A - Z</option>
-              <option value="sortReverse">Z - A</option>
-            </select>
-            <input onChange={e => this.enterSearchText(e)}
-              type="text"
-              id="search"
-              placeholder="search movie database"
-              name="search"
-            />
-            <input onClick={() => this.searchFunc} type="submit">🔍</input>
-          </form >
-        </div>
+        <Filter>searchFunc={e => this.searchByTitle(e)} searchByTitle={e => this.searchByTitle(e)}</Filter>
         <Movies data={Database}></Movies>
+        {this.state.Database.length === 0 && <p classname="noResult">No movies found!</p>}
 
       </div >
     );

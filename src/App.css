@@ -16,21 +16,25 @@ h3 {
 font-size: 1.3rem;
 }
 
-.searchbar {
+.searchDiv {
   display: flex;
   width: 100vw;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-content: center;
 }
 button,
 select,
 input {
+  display: inline-flex;
+  flex-wrap: wrap;
   margin: 1rem;
   height: 2rem;
   background-color:yellow;
   border: none;
   border-radius: 5px;
   box-shadow: 5px 5px 5px darkgray;
+  justify-content: space-evenly;
+  align-items: center;
 }
 button[type="submit"] {
   width: 3rem;
